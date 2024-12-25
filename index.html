@@ -1,0 +1,2231 @@
+<html><head><base href="." /><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>AURORE ACTUALITÉS</title><script src="https://code.jquery.com/jquery-3.6.0.min.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"><style>
+  :root {
+    --primary-color: #e74c3c;
+    --secondary-color: #34495e;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    position: relative; 
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+  }
+  
+  .header {
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 100; /* Reduced from 1000 to allow ads to show */
+    min-height: 60px; /* Reduced from 80px */
+    transition: all 0.3s ease;
+  }
+  
+  .header.scrolled {
+    min-height: 50px; /* Reduced height when scrolled */
+    font-size: 0.9em; /* Slightly smaller font when scrolled */
+  }
+  
+  .header-top {
+    background: var(--secondary-color);
+    color: white;
+    padding: 0.1rem; /* Reduced from 0.15rem */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+  }
+  
+  .datetime {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .marquee {
+    overflow: hidden;
+    flex: 1;
+    margin: 0 2rem;
+    white-space: nowrap;
+  }
+  
+  .scrolling-text {
+    display: inline-block;
+    animation: scroll-left 20s linear infinite;
+    white-space: nowrap;
+  }
+  
+  @keyframes scroll-left {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  
+  .nav-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.15rem 0; /* Reduced from 0.25rem */
+    position: relative; /* Added to help with button positioning */
+    padding-bottom: 0.5rem; /* Reduced from 1rem */
+  }
+  
+  .auth-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-left: auto;
+    margin-right: 2rem;
+  }
+  
+  .auth-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .login-btn {
+    background-color: var(--primary-color);
+    color: white;
+  }
+  
+  .signup-btn {
+    background-color: white;
+    color: var(--primary-color);
+  }
+  
+  .header.scrolled .auth-buttons .auth-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9em;
+  }
+  
+  .nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0.15rem; /* Reduced from 0.25rem */
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem; /* Reduced from 0.25rem */
+  }
+  
+  .section-navigation {
+    padding: 0.1rem 0; /* Reduced from 0.15rem */
+    margin-top: 0.15rem; /* Reduced from 0.25rem */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .sections {
+    display: flex;
+    gap: 1rem; /* Reduced from 1.5rem */
+    flex-wrap: wrap;
+    margin-right: 1rem; /* Add some space for the create article button */
+  }
+  
+  .header.scrolled .sections {
+    gap: 0.8rem;
+  }
+  
+  .section-link {
+    text-decoration: none;
+    color: var(--secondary-color);
+    font-weight: 500;
+    padding: 0.3rem 0.6rem; /* Reduced from 0.4rem 0.8rem */
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    font-size: 0.9rem; /* Reduced from 0.95rem */
+  }
+  
+  .header.scrolled .section-link {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.85rem;
+  }
+  
+  .section-link:hover {
+    color: var(--primary-color);
+    background: rgba(231, 76, 60, 0.1);
+  }
+  
+  .language-selector select {
+    padding: 0.2rem;
+    border: 1px solid white;
+    background: transparent;
+    color: white;
+    cursor: pointer;
+    max-width: 200px; /* Added to prevent too wide selector */
+    font-size: 0.9rem;
+  }
+  
+  .language-selector select option {
+    background: var(--secondary-color);
+    color: white;
+    padding: 5px;
+  }
+  
+  /* Add support for RTL languages */
+  [dir="rtl"] .language-selector select {
+    text-align: right;
+  }
+  
+  .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.1rem 2rem; /* Reduced from 0.15rem */
+  }
+  
+  .header.scrolled .logo-container {
+    padding: 0.05rem 2rem;
+  }
+  
+  .site-logo {
+    width: 40px; /* Adjust if needed for the new logo */
+    height: 40px; /* Adjust if needed for the new logo */
+    object-fit: contain;
+    animation: pulse 2s infinite;
+  }
+  
+  .header.scrolled .site-logo {
+    width: 35px;
+    height: 35px;
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  
+  .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+  }
+  
+  .header.scrolled .logo {
+    font-size: 1.3rem;
+  }
+  
+  .create-article-btn {
+    position: static; /* Removed absolute positioning */
+    margin-left: 2rem;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .create-article-btn:hover {
+    background-color: #c0392b;
+  }
+  
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .modal.show {
+    display: flex;
+  }
+  
+  .modal-content {
+    position: relative;
+    background-color: white;
+    width: 90%;
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  .modal-content h2 {
+    color: var(--secondary-color);
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 1rem;
+  }
+  
+  .close-modal {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--secondary-color);
+  }
+  
+  .article-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .form-group label {
+    font-weight: bold;
+    color: var(--secondary-color);
+    font-size: 1.1rem;
+  }
+  
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.1);
+  }
+  
+  .form-group textarea {
+    min-height: 150px;
+  }
+  
+  .form-group input[type="file"] {
+    width: 100%;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border: 2px dashed #2ecc71;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+  }
+  
+  .image-preview {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 2px dashed #2ecc71;
+    min-height: 150px;
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .image-preview img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  
+  .preview-container {
+    position: relative;
+    display: inline-block;
+    margin: 5px;
+    transition: transform 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .preview-container:hover {
+    transform: scale(1.05);
+  }
+  
+  .remove-image {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+  }
+  
+  .submit-article {
+    background-color: #2ecc71;
+    color: white;
+    padding: 1.2rem 2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(46, 204, 113, 0.2);
+  }
+  
+  .submit-article:hover {
+    background-color: #27ae60;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(46, 204, 113, 0.3);
+  }
+  
+  .image-preview:empty::before {
+    content: "Sélectionnez des images pour prévisualiser";
+    color: #666;
+    font-style: italic;
+    text-align: center;
+    width: 100%;
+  }
+  
+  .form-group label[for="images"] {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #2ecc71;
+    font-size: 1.2rem;
+  }
+  
+  .form-group label[for="images"]::before {
+    content: "📷";
+    font-size: 1.4rem;
+  }
+  
+  .main-content {
+    margin-top: 60px; /* Reduced from 80px to match new header height */
+    padding: 20px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .news-slider {
+    margin-bottom: 2rem;
+    position: relative;
+    height: 400px;
+    overflow: hidden;
+  }
+  
+  .slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .slide.active {
+    opacity: 1;
+  }
+  
+  .slide-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    color: white;
+  }
+  
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+  }
+  
+  .news-card {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+  }
+  
+  .news-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .news-image {
+    width: 100%;
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .news-content {
+    padding: 1rem;
+  }
+  
+  .category {
+    color: var(--primary-color);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .search-bar {
+    width: 100%;
+    max-width: 600px;
+    margin: 2rem auto;
+    position: relative;
+  }
+  
+  .search-input {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid #ddd;
+    border-radius: 25px;
+    font-size: 1rem;
+  }
+  
+  .search-button {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--secondary-color);
+    cursor: pointer;
+  }
+  
+  .footer {
+    position: relative; /* Footer ap toujou rete nan pati anba */
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 3rem 0;
+    margin-top: 4rem;
+  }
+  
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    padding: 0 2rem;
+  }
+  
+  .footer-section h3 {
+    color: white;
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+    position: relative;
+  }
+  
+  .footer-section h3::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -0.5rem;
+    width: 50px;
+    height: 2px;
+    background-color: var(--primary-color);
+  }
+  
+  .footer-section ul {
+    list-style: none;
+  }
+  
+  .footer-section ul li {
+    margin-bottom: 0.8rem;
+  }
+  
+  .footer-section ul li a {
+    color: #ecf0f1;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  .footer-section ul li a:hover {
+    color: var(--primary-color);
+  }
+  
+  .social-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .social-links a {
+    color: white;
+    font-size: 1.5rem;
+    transition: color 0.3s;
+  }
+  
+  .social-links a:hover {
+    color: var(--primary-color);
+  }
+  
+  .footer-bottom {
+    text-align: center;
+    padding: 1.5rem 0;
+    margin-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .toast-notification {
+    position: fixed;
+    top: 80px;
+    left: 20px;
+    background: var(--secondary-color);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    opacity: 0;
+    transform: translateX(-100%);
+    transition: all 0.5s ease;
+    z-index: 2000;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 300px;
+    max-width: 500px;
+    animation: bounce 0.5s ease;
+    border-left: 4px solid var(--primary-color);
+  }
+  
+  .toast-notification i {
+    font-size: 24px;
+    color: var(--primary-color);
+  }
+  
+  .toast-notification.show {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-100%); }
+    50% { transform: translateX(10px); }
+    100% { transform: translateX(0); }
+  }
+  
+  /* Update advertising section positioning */
+  .advertising-section {
+    position: fixed;
+    bottom: 20px; /* Position from bottom */
+    left: 20px; /* Changed from right to left */
+    width: 200px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 15px;
+    z-index: 99;
+  }
+  
+  /* Update comments section positioning */
+  .comments-section {
+    display: none; /* Hide initially */
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 350px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    padding: 0;
+    overflow: hidden;
+    z-index: 98;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(100px);
+  }
+  
+  .comments-section.visible {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .comments-header {
+    background: var(--secondary-color);
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  
+  .comments-header i {
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  
+  .comments-header i:hover {
+    transform: rotate(90deg);
+  }
+  
+  .comments-container {
+    padding: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+    background: #f8f9fa;
+  }
+  
+  .comment {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .comment-user {
+    font-weight: 600;
+    color: var(--secondary-color);
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .comment-user::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #2ecc71;
+    border-radius: 50%;
+    margin-right: 8px;
+  }
+  
+  .comment-text {
+    color: #4a4a4a;
+    line-height: 1.4;
+    margin-bottom: 5px;
+  }
+  
+  .comment-time {
+    font-size: 0.8em;
+    color: #888;
+    display: flex;
+    align-items: center;
+  }
+  
+  .comment-time::before {
+    content: '\f017';
+    font-family: 'Font Awesome 5 Free';
+    margin-right: 5px;
+  }
+  
+  .comment-form {
+    padding: 15px;
+    background: white;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .comment-input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  
+  .comment-input:focus {
+    border-color: var(--primary-color);
+  }
+  
+  .comment-submit {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s;
+  }
+  
+  .comment-submit:hover {
+    background: darken(var(--primary-color), 10%);
+    transform: translateY(-1px);
+  }
+  
+  .comment-submit i {
+    font-size: 0.9em;
+  }
+  
+  .chat-widget {
+    position: fixed;
+    bottom: 20px;
+    right: 760px; /* Positioned further right to not overlap newsletter */
+    width: 60px;
+    height: 60px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: pulse-chat 2s infinite;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    z-index: 98;
+  }
+  
+  .chat-icon {
+    font-size: 24px;
+    color: white;
+  }
+  
+  .chat-widget:hover {
+    transform: scale(1.1);
+    background: #c0392b;
+  }
+  
+  @keyframes pulse-chat {
+    0% {
+      transform: scale(1);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    50% {
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+  }
+  
+  .video-section {
+    margin: 4rem 0;
+    padding: 0 2rem;
+  }
+  
+  .video-grid {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .video-container {
+    text-align: center;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  
+  .video-container h3 {
+    margin-bottom: 1rem;
+    color: var(--secondary-color);
+  }
+  
+  .close-ad {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: transparent;
+    border: none;
+    color: #34495e;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0 5px;
+    line-height: 1;
+  }
+  
+  .close-ad:hover {
+    color: var(--primary-color);
+  }
+  
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    z-index: 1001;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  
+  .dropdown:hover .dropdown-content {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .dropdown-content a {
+    color: var(--secondary-color);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+  }
+  
+  .dropdown-content a:hover {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: var(--primary-color);
+    padding-left: 20px;
+  }
+  
+  .dropdown .section-link i {
+    margin-left: 5px;
+    font-size: 0.8em;
+    transition: transform 0.3s ease;
+  }
+  
+  .dropdown:hover .section-link i {
+    transform: rotate(180deg);
+  }
+  
+  .dropdown-content a:not(:last-child) {
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+  
+  @keyframes dropdownFade {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .dropdown:hover .dropdown-content {
+    animation: dropdownFade 0.3s ease forwards;
+  }
+  
+  .newsletter-section,
+.comments-section {
+    position: absolute; /* Pozisyone yo relatif ak body */
+    bottom: 20px; /* Mete yo nan pati anba body */
+    z-index: 98; /* Pi wo pase kontni nòmal men pi ba pase header */
+    width: 310px;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Newsletter seksyon: agoch anba */
+.newsletter-section {
+    left: 20px; /* Fè li parèt sou bò agoch */
+}
+
+/* Comments seksyon: adwat anba */
+.comments-section {
+    right: 20px; /* Fè li parèt sou bò adwat */
+}
+
+/* Pataje style pou lè seksyon yo vizib */
+.newsletter-section.visible,
+.comments-section.visible {
+    display: block; /* Montre seksyon yo */
+    transform: translateY(0); /* Reset pozisyon */
+}
+
+/* Pa default, kache seksyon yo */
+.newsletter-section,
+.comments-section {
+    display: none;
+}
+  .youtube-subscription {
+    position: absolute;
+    top: 110px;
+    right: 20px;
+    z-index: 1000;
+    animation: pulse 2s infinite;
+  }
+  
+  .youtube-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    text-decoration: none;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .youtube-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+  
+  .youtube-logo {
+    width: 40px; /* Adjust if needed for the new logo */
+    height: 40px; /* Adjust if needed for the new logo */
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .youtube-text {
+    color: var(--secondary-color);
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+  
+  .chat-box {
+    display: none;
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 300px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    z-index: 1000;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .chat-box.show {
+    display: flex;
+    flex-direction: column;
+    animation: slideUp 0.3s ease;
+  }
+  
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .chat-header {
+    background: var(--secondary-color);
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  
+  .chat-header i {
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  
+  .chat-header i:hover {
+    transform: rotate(90deg);
+  }
+  
+  .chat-messages {
+    padding: 15px;
+    height: 300px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .message {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    max-width: 80%;
+    animation: fadeIn 0.3s ease;
+  }
+  
+  .message.user {
+    margin-left: auto;
+    flex-direction: row-reverse;
+  }
+  
+  .agent-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .message-content {
+    background: #f0f2f5;
+    padding: 10px 15px;
+    border-radius: 15px;
+    border-top-left-radius: 5px;
+    font-size: 0.9em;
+  }
+  
+  .message.user .message-content {
+    background: var(--primary-color);
+    color: white;
+    border-radius: 15px;
+    border-top-right-radius: 5px;
+  }
+  
+  .chat-input {
+    padding: 15px;
+    display: flex;
+    gap: 10px;
+    border-top: 1px solid #eee;
+  }
+  
+  .chat-input input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  
+  .chat-input input:focus {
+    border-color: var(--primary-color);
+  }
+  
+  .chat-input button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .chat-input button:hover {
+    transform: scale(1.1);
+    background: darken(var(--primary-color), 10%);
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  </style></head><body>
+  <header class="header">
+    <div class="nav-container">
+      <div class="header-top">
+        <div class="datetime">
+          <i class="far fa-clock"></i>
+          <span id="current-datetime"></span>
+        </div>
+        <div class="marquee">
+          <span class="scrolling-text">Dernières nouvelles: Suivez l'actualité en direct sur AURORE ACTUALIÉS</span>
+        </div>
+        <div class="language-selector">
+          <select id="languageSelect">
+            <option value="fr">Français (French)</option>
+            <option value="en">English</option>
+            <option value="ht">Kreyòl (Haitian Creole)</option>
+            <option value="es">Español (Spanish)</option>
+            <option value="pt">Português (Portuguese)</option>
+            <option value="zh">中文 (Chinese - Simplified)</option>
+            <option value="zh-TW">繁體中文 (Chinese - Traditional)</option>
+            <option value="ar">العربية (Arabic)</option>
+            <option value="de">Deutsch (German)</option>
+            <option value="it">Italiano (Italian)</option>
+            <option value="ja">日本語 (Japanese)</option>
+            <option value="ko">한국어 (Korean)</option>
+            <option value="ru">Русский (Russian)</option>
+            <option value="hi">हिन्दी (Hindi)</option>
+            <option value="sw">Kiswahili (Swahili)</option>
+            <option value="tr">Türkçe (Turkish)</option>
+            <option value="nl">Nederlands (Dutch)</option>
+            <option value="pl">Polski (Polish)</option>
+            <option value="vi">Tiếng Việt (Vietnamese)</option>
+          </select>
+        </div>
+      </div>
+      <div class="nav-menu">
+        <div class="auth-buttons">
+          <button class="auth-btn login-btn" onclick="openLoginModal()">Connexion</button>
+          <button class="auth-btn signup-btn" onclick="openSignupModal()">Inscription</button>
+        </div>
+      </div>
+      <div class="section-navigation">
+        <div class="sections">
+          <a href="#actualites" class="section-link" data-translation-key="news">Actualités</a>
+          <a href="#politique" class="section-link" data-translation-key="politics">Politique</a>
+          <a href="#economie" class="section-link" data-translation-key="economy">Économie</a>
+          
+          <!-- Add dropdown for Sports -->
+          <div class="dropdown">
+            <a href="#sports" class="section-link" data-translation-key="sports">Sports <i class="fas fa-caret-down"></i></a>
+            <div class="dropdown-content">
+              <a href="#football">Football</a>
+              <a href="#basketball">Basketball</a>
+              <a href="#tennis">Tennis</a>
+              <a href="#volleyball">Volleyball</a>
+              <a href="#athletics">Athlétisme</a>
+            </div>
+          </div>
+          
+          <!-- Add dropdown for Culture -->
+          <div class="dropdown">
+            <a href="#culture" class="section-link" data-translation-key="culture">Culture <i class="fas fa-caret-down"></i></a>
+            <div class="dropdown-content">
+              <a href="#music">Musique</a>
+              <a href="#art">Art</a>
+              <a href="#cinema">Cinéma</a>
+              <a href="#literature">Littérature</a>
+              <a href="#theater">Théâtre</a>
+            </div>
+          </div>
+          
+          <a href="#education" class="section-link" data-translation-key="education">Education</a>
+          <a href="#sante" class="section-link" data-translation-key="health">Santé</a>
+          <a href="#religion" class="section-link" data-translation-key="religion">Religion</a>
+          <a href="#ephemeride" class="section-link" data-translation-key="ephemeris">Éphéméride</a>
+        </div>
+        <button class="create-article-btn" onclick="openModal()">Créer un Article</button>
+      </div>
+      <div class="youtube-subscription">
+        <a href="https://www.youtube.com/@AuroreActualitesofficial" target="_blank" class="youtube-link">
+          <img src="logo (3).png" alt="Aurore Actualités Logo" class="youtube-logo">
+          <span class="youtube-text">Abonnez-vous à la chaîne Aurore Actualités pour plus d'infos</span>
+        </a>
+      </div>
+      <div class="logo-container">
+        <a href="/" style="text-decoration: none; display: flex; align-items: center; gap: 1rem;">
+          <img src="logo (3).png" alt="Planet Information Logo" class="site-logo">
+          <div class="logo">AURORE ACTUALITÉS</div>
+        </a>
+      </div>
+    </div>
+  </header>
+  
+  <div class="modal" id="articleModal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal()">&times;</span>
+      <h2>Créer un Nouvel Article</h2>
+      <form class="article-form" id="articleForm">
+        <div class="form-group">
+          <label for="title">Titre</label>
+          <input type="text" id="title" required>
+        </div>
+        <div class="form-group">
+          <label for="category">Catégorie</label>
+          <select id="category" required>
+            <option value="Actualités">Actualités</option>
+            <option value="Politique">Politique</option>
+            <option value="Économie">Économie</option>
+            <option value="Sports">Sports</option>
+            <option value="Culture">Culture</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea id="description" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="images">Choisir des Images</label>
+          <input type="file" id="images" accept="image/*" multiple title="Cliquez ici pour sélectionner des images">
+          <div class="image-preview" id="imagePreview"></div>
+        </div>
+        <button type="submit" class="submit-article">
+          <i class="fas fa-paper-plane"></i>
+          Publier l'Article
+        </button>
+      </form>
+    </div>
+  </div>
+  
+  <div class="modal" id="loginModal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeLoginModal()">&times;</span>
+      <h2>Connexion</h2>
+      <form class="auth-form">
+        <div class="form-group">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" required>
+        </div>
+        <div class="form-group">
+          <label for="login-password">Mot de passe</label>
+          <input type="password" id="login-password" required>
+        </div>
+        <button type="submit" class="submit-auth">Se connecter</button>
+      </form>
+    </div>
+  </div>
+  
+  <div class="modal" id="signupModal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeSignupModal()">&times;</span>
+      <h2>Inscription</h2>
+      <form class="auth-form">
+        <div class="form-group">
+          <label for="signup-name">Nom complet</label>
+          <input type="text" id="signup-name" required>
+        </div>
+        <div class="form-group">
+          <label for="signup-email">Email</label>
+          <input type="email" id="signup-email" required>
+        </div>
+        <div class="form-group">
+          <label for="signup-password">Mot de passe</label>
+          <input type="password" id="signup-password" required>
+        </div>
+        <button type="submit" class="submit-auth">S'inscrire</button>
+      </form>
+    </div>
+  </div>
+  
+  <main class="main-content">
+    <div class="search-bar">
+      <input type="text" class="search-input" placeholder="Rechercher une actualité...">
+      <button class="search-button">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+  
+    <div class="news-slider">
+      <div class="slide active" style="background-image: url('https://picsum.photos/1200/400')">
+        <div class="slide-content">
+          <h2>AURORE ACTUALITÉS - Les dernières actualités en Haïti</h2>
+          <p>Restez informé des événements majeurs qui façonnent l'actualité nationale et internationale</p>
+        </div>
+      </div>
+    </div>
+  
+    <div class="video-section">
+      <h2 style="text-align: center; margin-bottom: 2rem; color: var(--secondary-color);">Nos Vidéos</h2>
+      
+      <div class="video-grid">
+        <!-- YouTube Video -->
+        <div class="video-container" style="width: 100%; max-width: 800px; margin: 0 auto;">
+          <h3>YouTube</h3>
+          <iframe 
+            width="100%" 
+            height="315" 
+            src="https://www.youtube.com/embed/gtPzrKnNc0Y" 
+            title="YouTube video" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+    </div>
+  
+    <div class="news-grid" id="newsGrid"></div>
+  
+    <div class="advertising-section" id="adSection">
+      <button class="close-ad" onclick="toggleAds()">×</button>
+      <div class="ad-container" id="adContainer">
+        <!-- Ads will be dynamically inserted here -->
+        <div style="padding: 10px; text-align: center;">
+          <h4 style="color: #34495e; margin-bottom: 10px;">Publicité</h4>
+          <div style="background: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 4px; border: 1px solid #e9ecef;">
+            <p style="margin-bottom: 10px;">Espace publicitaire premium</p>
+            <div style="background: #fff; padding: 10px; border-radius: 4px;">
+              Votre annonce ici
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <div class="newsletter-section">
+    <div class="newsletter-header">
+      <span>Newsletter</span>
+      <i class="fas fa-envelope"></i>
+    </div>
+    <div class="newsletter-container">
+      <h2>Restez informé</h2>
+      <p>Recevez les dernières actualités directement dans votre boîte mail.</p>
+      <form class="newsletter-form">
+        <input type="email" placeholder="Votre adresse email" required>
+        <button type="submit">
+          <i class="fas fa-paper-plane"></i>
+          S'abonner
+        </button>
+      </form>
+    </div>
+  </div>
+  
+  <div class="comments-section">
+    <div class="comments-header">
+      <span>Commentaires</span>
+      <i class="fas fa-times" onclick="toggleComments()"></i>
+    </div>
+    <div class="comments-container" id="commentsContainer">
+      <!-- Comments will be loaded here -->
+    </div>
+    <form class="comment-form" onsubmit="addComment(event)">
+      <input type="text" class="comment-input" placeholder="Écrivez un commentaire..." required>
+      <button type="submit" class="comment-submit">
+        <i class="fas fa-paper-plane"></i>
+        Envoyer
+      </button>
+    </form>
+  </div>
+  
+  <div class="chat-widget">
+    <i class="fas fa-comments chat-icon"></i>
+  </div>
+  
+  <div class="chat-box" id="chatBox">
+    <div class="chat-header">
+      <span>Chat en direct</span>
+      <i class="fas fa-times" onclick="toggleChat()"></i>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="message agent">
+        <img src="logo (3).png" alt="Agent" class="agent-avatar">
+        <div class="message-content">
+          Bonjour! Comment puis-je vous aider aujourd'hui?
+        </div>
+      </div>
+    </div>
+    <div class="chat-input">
+      <input type="text" id="chatInput" placeholder="Écrivez votre message...">
+      <button onclick="sendMessage()">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+  
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>À Propos</h3>
+        <ul>
+          <li><a href="https://example.com/about">Qui sommes-nous</a></li>
+          <li><a href="https://example.com/team">Notre équipe</a></li>
+          <li><a href="https://example.com/careers">Carrières</a></li>
+          <li><a href="https://example.com/contact">Contactez-nous</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Catégories</h3>
+        <ul>
+          <li><a href="https://example.com/actualites">Actualités</a></li>
+          <li><a href="https://example.com/politique">Politique</a></li>
+          <li><a href="https://example.com/economie">Économie</a></li>
+          <li><a href="https://example.com/sports">Sports</a></li>
+          <li><a href="https://example.com/culture">Culture</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Services</h3>
+        <ul>
+          <li><a href="https://example.com/publicite">Publicité</a></li>
+          <li><a href="https://example.com/abonnement">Abonnement</a></li>
+          <li><a href="https://example.com/newsletter">Newsletter</a></li>
+          <li><a href="https://example.com/applications">Applications mobiles</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Contact</h3>
+        <ul>
+          <li><i class="fas fa-envelope"></i> auroreactualites@gmail.com</li>
+          <li><i class="fas fa-phone"></i> +5549984136753</li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Suivez-nous</h3>
+        <p>Restez connecté avec AURORE ACTUALITÉS sur les réseaux sociaux</p>
+        <div class="social-links">
+          <a href="https://www.facebook.com/profile.php?id=61561716274813&mibextid=ZbWKwL" target="_blank"><i class="fab fa-facebook"></i></a>
+          <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+          <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.youtube.com/@AuroreActualitesofficial" target="_blank"><i class="fab fa-youtube"></i></a>
+          <a href="https://www.tiktok.com/@auroreactualites?_t=8s89l3hKoon&_r=1" target="_blank"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; 2024 AURORE ACTUALITÉS. Tous droits réservés.</p>
+      <br>
+      <h6>application Créer par programeur Robensonn Pierre </h6> 
+      <h6>contact:pierrobensonn7@gmail.com </h6>
+      <h6>Contact:+5549999931125 </h6>
+    </div>
+  </footer>
+  
+  <script>
+  let commentActivityTimer;
+  const COMMENT_IDLE_TIMEOUT = 30000; // 30 seconds of inactivity before minimizing
+  
+  function startCommentActivityTimer() {
+    clearTimeout(commentActivityTimer);
+    commentActivityTimer = setTimeout(() => {
+      minimizeComments();
+    }, COMMENT_IDLE_TIMEOUT);
+  }
+  
+  function minimizeComments() {
+    const commentsSection = document.querySelector('.comments-section');
+    commentsSection.style.transform = 'translateY(calc(100% - 50px))';
+  }
+  
+  function maximizeComments() {
+    const commentsSection = document.querySelector('.comments-section');
+    commentsSection.style.transform = 'translateY(0)';
+    startCommentActivityTimer();
+  }
+  
+  function toggleComments() {
+    const commentsSection = document.querySelector('.comments-section');
+    if (commentsSection.style.transform === 'translateY(0px)') {
+      minimizeComments();
+    } else {
+      maximizeComments();
+    }
+  }
+  
+  const newsData = [
+    {
+      title: "Les dernières actualités",
+      category: "Actualités",
+      description: "Restez informé des derniers événements qui façonnent notre monde.",
+      image: "https://picsum.photos/300/200?random=1"
+    },
+    {
+      title: "Politique internationale",
+      category: "Politique", 
+      description: "Les développements politiques majeurs à travers le monde.",
+      image: "https://picsum.photos/300/200?random=2"
+    },
+    {
+      title: "Économie mondiale",
+      category: "Économie",
+      description: "Analyse des tendances économiques globales.",
+      image: "https://picsum.photos/300/200?random=3"
+    }
+  ];
+  
+  function loadNews() {
+    const newsGrid = document.getElementById('newsGrid');
+    newsGrid.innerHTML = '';
+  
+    newsData.forEach((article, index) => {
+      const card = document.createElement('div');
+      card.className = 'news-card';
+      card.innerHTML = `
+        <div class="news-image" style="background-image: url('${article.image}')"></div>
+        <div class="news-content">
+          <div class="category">${article.category}</div>
+          <h3>${article.title}</h3>
+          <p>${article.description}</p>
+        </div>
+      `;
+      newsGrid.appendChild(card);
+    });
+  }
+  
+  let selectedImages = [];
+  
+  function handleImageUpload(event) {
+    const files = event.target.files;
+    const preview = document.getElementById('imagePreview');
+    preview.innerHTML = '';
+    selectedImages = [];
+  
+    Array.from(files).forEach((file) => {
+      if (file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const imgData = e.target.result;
+          selectedImages.push({
+            data: imgData,
+            file: file
+          });
+          
+          const container = document.createElement('div');
+          container.className = 'preview-container';
+          
+          const img = document.createElement('img');
+          img.src = imgData;
+          
+          const removeBtn = document.createElement('button');
+          removeBtn.className = 'remove-image';
+          removeBtn.innerHTML = '×';
+          removeBtn.onclick = () => {
+            container.remove();
+            selectedImages = selectedImages.filter(img => img.data !== imgData);
+          };
+          
+          container.appendChild(img);
+          container.appendChild(removeBtn);
+          preview.appendChild(container);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+  
+  function openModal() {
+    document.getElementById('articleModal').classList.add('show');
+    // Reset form
+    document.getElementById('articleForm').reset();
+    document.getElementById('imagePreview').innerHTML = '';
+    selectedImages = [];
+  }
+  
+  function closeModal() {
+    document.getElementById('articleModal').classList.remove('show');
+  }
+  
+  function openLoginModal() {
+    document.getElementById('loginModal').classList.add('show');
+  }
+  
+  function closeLoginModal() {
+    document.getElementById('loginModal').classList.remove('show');
+  }
+  
+  function openSignupModal() {
+    document.getElementById('signupModal').classList.add('show');
+  }
+  
+  function closeSignupModal() {
+    document.getElementById('signupModal').classList.remove('show');
+  }
+  
+  // Add header scroll functionality
+  window.addEventListener('scroll', () => {
+    const header = document.querySelector('.header');
+    if (window.scrollY > 50) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+  });
+  
+  // Chat functionality
+  function toggleChat() {
+    const chatBox = document.getElementById('chatBox');
+    chatBox.classList.toggle('show');
+    
+    if (chatBox.classList.contains('show')) {
+      // Scroll to bottom of messages when opening chat
+      const messagesContainer = document.getElementById('chatMessages');
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+  }
+  
+  function sendMessage() {
+    const input = document.getElementById('chatInput');
+    const message = input.value.trim();
+    
+    if (message) {
+      const messagesContainer = document.getElementById('chatMessages');
+      
+      // Add user message
+      const userMessage = document.createElement('div');
+      userMessage.className = 'message user';
+      userMessage.innerHTML = `
+        <div class="message-content">${message}</div>
+      `;
+      messagesContainer.appendChild(userMessage);
+      
+      // Clear input
+      input.value = '';
+      
+      // Auto-scroll to bottom
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      
+      // Simulate agent response after a delay
+      setTimeout(() => {
+        const agentMessage = document.createElement('div');
+        agentMessage.className = 'message agent';
+        agentMessage.innerHTML = `
+          <img src="logo (2).png" alt="Agent" class="agent-avatar">
+          <div class="message-content">
+            Merci pour votre message. Un agent vous répondra bientôt.
+          </div>
+        `;
+        messagesContainer.appendChild(agentMessage);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }, 1000);
+    }
+  }
+  
+  // Add event listener for chat widget click
+  document.addEventListener('DOMContentLoaded', () => {
+    const chatWidget = document.querySelector('.chat-widget');
+    chatWidget.addEventListener('click', toggleChat);
+    
+    // Add enter key support for chat input
+    const chatInput = document.getElementById('chatInput');
+    chatInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
+  });
+  
+  // Comments section functionality 
+  function toggleComments() {
+    const commentsSection = document.querySelector('.comments-section');
+    if (commentsSection.style.transform === 'translateY(0px)') {
+      minimizeComments();
+    } else {
+      maximizeComments();
+    }
+  }
+  
+  function addComment(event) {
+    event.preventDefault();
+    const input = event.target.querySelector('.comment-input');
+    const comment = input.value.trim();
+    
+    if (comment) {
+      const container = document.getElementById('commentsContainer');
+      const commentElement = document.createElement('div');
+      commentElement.className = 'comment';
+      
+      const now = new Date();
+      const timeString = now.toLocaleTimeString('fr-FR', {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      
+      commentElement.innerHTML = `
+        <div class="comment-user">Utilisateur</div>
+        <div class="comment-text">${comment}</div>
+        <div class="comment-time">${timeString}</div>
+      `;
+      
+      container.appendChild(commentElement);
+      input.value = '';
+      
+      // Smooth scroll to bottom
+      container.scrollTo({
+        top: container.scrollHeight,
+        behavior: 'smooth'
+      });
+      
+      // Add animation to new comment
+      commentElement.style.opacity = '0';
+      commentElement.style.transform = 'translateY(20px)';
+      setTimeout(() => {
+        commentElement.style.transition = 'all 0.3s ease';
+        commentElement.style.opacity = '1';
+        commentElement.style.transform = 'translateY(0)';
+      }, 100);
+      
+      // Reset comment activity timer
+      startCommentActivityTimer();
+    }
+  }
+  
+  // Initialize comments with sample comments
+  function initializeComments() {
+    const container = document.getElementById('commentsContainer');
+    container.innerHTML = ''; // Clear existing comments
+    
+    const sampleComments = [
+      {
+        user: "Jean Dupont",
+        text: "Excellent article! Les informations sont très détaillées et bien présentées.",
+        time: "Il y a 5 minutes"
+      },
+      {
+        user: "Marie Laurent",
+        text: "Une analyse approfondie qui apporte un nouvel éclairage sur le sujet.",
+        time: "Il y a 15 minutes"
+      },
+      {
+        user: "Pierre Martin",
+        text: "Je partage complètement cette vision. Merci pour cet article enrichissant!",
+        time: "Il y a 30 minutes"
+      }
+    ];
+    
+    sampleComments.forEach(comment => {
+      const commentElement = document.createElement('div');
+      commentElement.className = 'comment';
+      commentElement.innerHTML = `
+        <div class="comment-user">${comment.user}</div>
+        <div class="comment-text">${comment.text}</div>
+        <div class="comment-time">${comment.time}</div>
+      `;
+      container.appendChild(commentElement);
+    });
+  }
+  
+  // Call this function when the page loads
+  document.addEventListener('DOMContentLoaded', () => {
+    loadNews();
+    initializeComments();
+    
+    document.getElementById('images').addEventListener('change', handleImageUpload);
+    document.querySelector('.create-article-btn').addEventListener('click', openModal);
+    
+    // Close modal when clicking outside
+    document.getElementById('articleModal').addEventListener('click', (event) => {
+      if (event.target === event.currentTarget) {
+        closeModal();
+      }
+    });
+  
+    document.getElementById('articleForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const newArticle = {
+        title: document.getElementById('title').value,
+        category: document.getElementById('category').value,
+        description: document.getElementById('description').value,
+        image: selectedImages.length > 0 ? selectedImages[0].data : 'https://picsum.photos/300/200?random=' + (newsData.length + 1)
+      };
+      
+      newsData.unshift(newArticle);
+      loadNews();
+      closeModal();
+    });
+  
+    // Make comments section visible by default
+    document.querySelector('.comments-section').style.display = 'block';
+  
+    // Update datetime
+    function updateDateTime() {
+      const now = new Date();
+      const options = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      };
+      document.getElementById('current-datetime').textContent = 
+        now.toLocaleDateString('fr-FR', options) + ' ' + now.toLocaleTimeString('fr-FR');
+    }
+    
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+    
+    // Show newsletter popup after 3 seconds
+    setTimeout(showNewsletterPopup, 3000);
+    
+    // Show newsletter popup periodically (every 2 minutes)
+    setInterval(showNewsletterPopup, 120000);
+  });
+  
+  function showNewsletterPopup() {
+    const toast = document.createElement('div');
+    toast.className = 'toast-notification';
+    toast.innerHTML = `
+      <i class="fas fa-envelope"></i>
+      <div>
+        <strong>Newsletter AURORE ACTUALITÉS></strong><br>
+        Abonnez-vous à notre newsletter pour recevoir les dernières actualités !
+      </div>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    // Show the notification
+    setTimeout(() => {
+      toast.classList.add('show');
+    }, 100);
+    
+    // Remove after 5 seconds
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => {
+        toast.remove();
+      }, 500);
+    }, 5000);
+  }
+  
+  function toggleAds() {
+    const adContainer = document.getElementById('adContainer');
+    const adSection = document.getElementById('adSection');
+    
+    if (adContainer.style.display === 'none') {
+      adContainer.style.display = 'block';
+      adSection.style.height = 'auto';
+    } else {
+      adContainer.style.display = 'none';
+      adSection.style.height = '20px';
+    }
+  }
+  
+  function showSubscriptionPrompt() {
+    const prompt = document.createElement('div');
+    prompt.className = 'subscription-prompt';
+    prompt.innerHTML = `
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <i class="fas fa-bell"></i>
+        <span>Abonnez-vous à AURORE ACTUALITÉS pour ne rien manquer !</span>
+      </div>
+    `;
+    document.body.appendChild(prompt);
+    
+    // Show the prompt with animation
+    setTimeout(() => {
+      prompt.style.display = 'block';
+    }, 100);
+    
+    // Remove the prompt after 5 seconds
+    setTimeout(() => {
+      prompt.style.opacity = '0';
+      prompt.style.transform = 'translateY(20px)';
+      setTimeout(() => {
+        prompt.remove();
+      }, 500);
+    }, 5000);
+  }
+  
+  // Show subscription prompt periodically
+  setInterval(showSubscriptionPrompt, 60000); // Shows every minute
+  
+  function checkScroll() {
+    const scrollPosition = window.scrollY;
+    const windowHeight = window.innerHeight;
+    const footerPosition = document.querySelector('.footer').offsetTop;
+    const showThreshold = footerPosition - windowHeight;
+  
+    const comments = document.querySelector('.comments-section');
+    const newsletter = document.querySelector('.newsletter-section');
+  
+    if (scrollPosition >= showThreshold) {
+      comments.classList.add('visible');
+      newsletter.classList.add('visible');
+    } else {
+      comments.classList.remove('visible');
+      newsletter.classList.remove('visible');
+    }
+  }
+  
+  // Add scroll event listener
+  window.addEventListener('scroll', checkScroll);
+  
+  // Check initial scroll position
+  document.addEventListener('DOMContentLoaded', () => {
+    // ... existing DOMContentLoaded code ...
+    
+    // Initial check for scroll position
+    checkScroll();
+  });
+  
+  // New functions for toast notification
+  function showToastNotification(message) {
+    const toast = document.createElement('div');
+    toast.className = 'toast-notification';
+    toast.textContent = message;
+    
+    // Add any icons if needed
+    // For example, for a success message
+    // toast.innerHTML = `<i class="fas fa-check"></i> ${message}`;
+    
+    document.body.appendChild(toast);
+    
+    // Show the notification
+    setTimeout(() => {
+      toast.classList.add('show');
+    }, 100);
+    
+    // Remove after 5 seconds
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => {
+        toast.remove();
+      }, 500);
+    }, 5000);
+  }
+  
+  function startPeriodicNotifications() {
+    const notifications = [
+      {
+        icon: "fas fa-newspaper",
+        message: "Actualités - Les dernières nouvelles en direct"
+      },
+      {
+        icon: "fas fa-landmark",
+        message: "Politique - Suivez l'actualité politique nationale et internationale"
+      },
+      {
+        icon: "fas fa-chart-line",
+        message: "Économie - Analyses et tendances économiques"
+      },
+      {
+        icon: "fas fa-futbol",
+        message: "Sports - Football, Basketball, Tennis et plus encore"
+      },
+      {
+        icon: "fas fa-theater-masks",
+        message: "Culture - Art, Musique, Cinéma et Littérature"
+      },
+      {
+        icon: "fas fa-graduation-cap",
+        message: "Education - L'actualité du monde éducatif"
+      },
+      {
+        icon: "fas fa-heartbeat",
+        message: "Santé - Informations et conseils santé"
+      },
+      {
+        icon: "fas fa-pray",
+        message: "Religion - L'actualité religieuse"
+      },
+      {
+        icon: "fas fa-calendar-alt",
+        message: "Éphéméride - Les événements du jour"
+      }
+    ];
+    
+    let index = 0;
+    
+    function showNextNotification() {
+      const notification = notifications[index];
+      const toast = document.createElement('div');
+      toast.className = 'toast-notification';
+      toast.innerHTML = `<i class="${notification.icon}"></i> ${notification.message}`;
+      
+      document.body.appendChild(toast);
+      
+      // Show the notification
+      setTimeout(() => {
+        toast.classList.add('show');
+      }, 100);
+      
+      // Remove after 5 seconds
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+          toast.remove();
+        }, 500);
+      }, 5000);
+      
+      // Update index for next notification
+      index = (index + 1) % notifications.length;
+    }
+    
+    // Show first notification immediately
+    showNextNotification();
+    
+    // Show notifications periodically
+    setInterval(showNextNotification, 6000); // Show new notification every 6 seconds
+  }
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    startPeriodicNotifications();
+  });
+  
+  // Language translations object
+  const translations = {
+    'fr': {
+      'news': 'Actualités',
+      'politics': 'Politique',
+      'economy': 'Économie', 
+      'sports': 'Sports',
+      'culture': 'Culture',
+      'education': 'Education',
+      'health': 'Santé',
+      'religion': 'Religion',
+      'ephemeris': 'Éphéméride',
+      'login': 'Connexion',
+      'signup': 'Inscription'
+    },
+    'en': {
+      'news': 'News',
+      'politics': 'Politics',
+      'economy': 'Economy',
+      'sports': 'Sports', 
+      'culture': 'Culture',
+      'education': 'Education',
+      'health': 'Health',
+      'religion': 'Religion',
+      'ephemeris': 'Ephemeris',
+      'login': 'Login',
+      'signup': 'Sign up'
+    },
+    'ht': {
+      'news': 'Nouvèl',
+      'politics': 'Politik',
+      'economy': 'Ekonomi',
+      'sports': 'Espò',
+      'culture': 'Kilti',
+      'education': 'Edikasyon',
+      'health': 'Sante',
+      'religion': 'Relijyon',
+      'ephemeris': 'Efemerid',
+      'login': 'Konekte',
+      'signup': 'Enskri'
+    }
+    // Add other language translations as needed
+  };
+  
+  // Function to change language
+  function changeLanguage(lang) {
+    if (!translations[lang]) {
+      console.error('Translation not found for language:', lang);
+      return;
+    }
+  
+    try {
+      // Update section links
+      const sectionLinks = document.querySelectorAll('.section-link');
+      sectionLinks.forEach(link => {
+        const key = link.getAttribute('data-translation-key');
+        if (key && translations[lang][key]) {
+          link.textContent = translations[lang][key];
+        }
+      });
+  
+      // Update auth buttons 
+      const loginBtn = document.querySelector('.login-btn');
+      const signupBtn = document.querySelector('.signup-btn');
+      if (loginBtn && translations[lang]['login']) {
+        loginBtn.textContent = translations[lang]['login'];
+      }
+      if (signupBtn && translations[lang]['signup']) {
+        signupBtn.textContent = translations[lang]['signup'];
+      }
+  
+      // Update HTML dir attribute for RTL languages
+      document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+  
+      // Store selected language in localStorage
+      localStorage.setItem('selectedLanguage', lang);
+  
+    } catch (error) {
+      console.error('Error changing language:', error);
+    }
+  }
+  
+  // Update the event listener initialization
+  document.addEventListener('DOMContentLoaded', () => {
+    const languageSelect = document.getElementById('languageSelect');
+    if (!languageSelect) {
+      console.error('Language select element not found');
+      return;
+    }
+  
+    // Add data-translation-key attributes to section links if not already present
+    const sectionLinks = document.querySelectorAll('.section-link');
+    sectionLinks.forEach(link => {
+      if (!link.getAttribute('data-translation-key')) {
+        const text = link.textContent.trim().toLowerCase();
+        link.setAttribute('data-translation-key', text);
+      }
+    });
+  
+    // Add change event listener to language selector
+    languageSelect.addEventListener('change', (e) => {
+      const selectedLang = e.target.value;
+      changeLanguage(selectedLang);
+    });
+  
+    // Load saved language preference
+    const savedLanguage = localStorage.getItem('selectedLanguage');
+    if (savedLanguage && translations[savedLanguage]) {
+      languageSelect.value = savedLanguage;
+      changeLanguage(savedLanguage);
+    }
+  });
+
+  document.addEventListener("scroll", function () {
+    const commentsSection = document.querySelector(".comments-section");
+    const footer = document.querySelector("footer");
+
+    // Jwenn pozisyon footer la
+    const footerPosition = footer.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+
+    // Tcheke si footer la parèt nan fen ekran an
+    if (footerPosition.top <= windowHeight) {
+        commentsSection.style.display = "block"; // Fè comments-section parèt
+    } else {
+        commentsSection.style.display = "none"; // Kache comments-section
+    }
+});
+
+document.addEventListener("scroll", function () {
+    const commentsSection = document.querySelector(".comments-section");
+    const newsletterSection = document.querySelector(".newsletter-section");
+    const footer = document.querySelector("footer");
+
+    const footerPosition = footer.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+
+    if (footerPosition.top <= windowHeight) {
+        commentsSection.classList.add("visible");
+        newsletterSection.classList.add("visible");
+    } else {
+        commentsSection.classList.remove("visible");
+        newsletterSection.classList.remove("visible");
+    }
+});
+
+
+  </script>
+  </body></html>
